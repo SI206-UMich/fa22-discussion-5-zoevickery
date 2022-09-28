@@ -3,8 +3,8 @@ import unittest
 # Counts the number of a's in a sentence (e.g., a string)
 def count_a(sentence):
 	total = 0
-	for i in range(len(sentence) - 1):
-		if i == 'a':
+	for char in sentence:
+		if char == 'a':
 			total += 1
 	return total
 
@@ -28,7 +28,7 @@ class Warehouse:
 
 	# Constructor
 	def __init__(self, items = []):
-		self.items = items[:]
+		self.items = items#[:]
 
 	# Prints all the items in the warehouse, one on each line.	
 	def print_items(self):
@@ -38,14 +38,34 @@ class Warehouse:
 
 	# Adds an item to the warehouse	
 	def add_item(self, item):
+		self.items.append(item)
+		return self.items
 		pass
 
 	# Returns the item in the warehouse with the most stock		
 	def get_max_stock(self):
+		if len(self.items) == 0:
+			return None
+		max_item = None
+		max_q = 0
+		for item in self.items:
+			if item.stock > max_q:
+				max_q = item.stock
+				max_item = item
+		return max_item
 		pass
 	
 	# Returns the item in the warehouse with the highest price
 	def get_max_price(self):
+		if len(self.items) == 0:
+			return None
+		max_item = None
+		max_price = 0
+		for item in self.items:
+			if item.price > max_price:
+				max_price = item.price
+				max_item = item
+		return max_item
 		pass	
 
 
@@ -63,21 +83,35 @@ class TestAllMethods(unittest.TestCase):
 
 	## Check to see whether count_a works
 	def test_count_a(self):
+		self.assertEqual(count_a("Water"), 1, "count_a(Water)")
+		self.assertEqual(count_a("cider"), 0, "count_a(Cider)")
+		self.assertEqual(count_a(""), 0, "count_a('')")
 		pass
 
 
 	## Check to see whether you can add an item to the warehouse
 	def test_add_item(self):
+		self.w =  Warehouse()
+		self.w.add_item(self.item1)
+		self.assertEqual(self.w.add_item(self.item2), self.w.items, "testing that item1 is added")
 		pass
 
 
 	## Check to see whether warehouse correctly returns the item with the most stock
 	def test_warehouse_max_stocks(self):
+		self.w = Warehouse()
+		self.w.add_item(self.item1)
+		self.w.add_item(self.item2)
+		self.assertEqual(self.w.get_max_stock(), self.item2, "item2 has the most stock")
 		pass
 
 
 	# Check to see whether the warehouse correctly return the item with the highest price
 	def test_warehouse_max_price(self):
+		self.w = Warehouse()
+		self.w.add_item(self.item1)
+		self.w.add_item(self.item2)
+		self.assertEqual(self.w.get_max_stock(), self.item1, "item1 has the highest price")
 		pass
 		
 
